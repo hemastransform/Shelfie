@@ -8,7 +8,7 @@ from azure.data.tables import TableServiceClient, TableEntity
 
 # --- AZURE CONFIGURATION ---
 # These must be set as Application Settings in your Static Web App
-AZURE_STORAGE_CONNECTION_STRING = os.environ.get("AzureWebJobsStorage")
+AZURE_STORAGE_CONNECTION_STRING = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
 BLOB_CONTAINER_NAME = "raw-images"
 TABLE_NAME = "ImageMetadata"
 
