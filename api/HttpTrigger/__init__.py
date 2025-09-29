@@ -33,7 +33,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         # --- 2. Save Metadata to Azure Table Storage ---
         table_service_client = TableServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
         table_client = table_service_client.get_table_client(table_name=TABLE_NAME)
-        table_client.create_table_if_not_exists()
+        
+        # --- FIX IS HERE ---
+        table_client.create_table() # This is the corrected function name
+        # --- END OF FIX ---
         
         entity = TableEntity(
             PartitionKey=data['city'],
