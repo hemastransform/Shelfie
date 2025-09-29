@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shelf Scanner</title>
+    <title>Shelfie</title>
     <style>
         body { font-family: sans-serif; max-width: 500px; margin: 2rem auto; padding: 1rem; background-color: #f4f4f9; }
         form { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -12,19 +12,34 @@
         button { width: 100%; padding: 1rem; background-color: #0078d4; color: white; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
         button:disabled { background-color: #a0a0a0; }
         #status { margin-top: 1rem; font-weight: bold; text-align: center; }
-        /* --- NEW: Styles for the progress bar --- */
         #progress-container { width: 100%; background-color: #ddd; border-radius: 4px; margin-top: 1rem; display: none; }
         #progress-bar { width: 50%; height: 20px; background-color: #0078d4; border-radius: 4px; text-align: center; color: white; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
-    <h1>Shelf Scanner</h1>
+    <h1>Shelfie</h1>
     <form id="upload-form">
         <label for="sales_id">Sales ID:</label>
         <input type="text" id="sales_id" name="sales_id" required>
+        
+        <label for="outlet_name">Outlet Name:</label>
+        <input type="text" id="outlet_name" name="outlet_name" required>
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="territory">Territory:</label>
+        <input type="text" id="territory" name="territory" required>
+
+        <input type="hidden" id="location_gps" name="location_gps">
+
         <label for="shelf_photo">Take Shelf Photo:</label>
         <input type="file" id="shelf_photo" name="shelf_photo" accept="image/*" capture="environment" required>
+
         <button type="submit" id="submit-button">Upload Image</button>
     </form>
     
