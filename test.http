@@ -1,0 +1,13 @@
+POST https://gray-bay-0340db500.2.azurestaticapps.net/api/HttpTrigger
+Content-Type: application/json
+
+{
+    "territory": "Test Territory",
+    "retailer_type": "Test Retailer",
+    "sales_id": "Test-001",
+    "outlet_name": "Test Outlet",
+    "city": "Test City",
+    "address": "Test Address",
+    "location_gps": "0, 0",
+    "filename": "test.jpg"
+}
