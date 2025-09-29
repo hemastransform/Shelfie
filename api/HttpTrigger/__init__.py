@@ -35,7 +35,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         table_client = table_service_client.get_table_client(table_name=TABLE_NAME)
         
         # --- FIX IS HERE ---
-        table_client.create_table() # This is the corrected function name
+        # This will now safely create the table only if it doesn't already exist.
+        table_client.create_table_if_not_exists()
         # --- END OF FIX ---
         
         entity = TableEntity(

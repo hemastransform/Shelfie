@@ -1,27 +1,11 @@
 const form = document.getElementById('upload-form');
 const statusDiv = document.getElementById('status');
-const locationInput = document.getElementById('location_gps');
 const submitButton = document.getElementById('submit-button');
+// --- NEW: Get the progress bar elements ---
+const progressContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress-bar');
 
-// Get GPS location as soon as the page loads
-window.addEventListener('load', () => {
-    statusDiv.textContent = "Getting GPS location...";
-    if (!navigator.geolocation) {
-        statusDiv.textContent = "Geolocation is not supported by your browser.";
-    } else {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                locationInput.value = `${lat}, ${lon}`;
-                statusDiv.textContent = "GPS Location Captured. Ready to scan.";
-            },
-            () => {
-                statusDiv.textContent = "Unable to retrieve your location. Please enable GPS.";
-            }
-        );
-    }
-});
+// ... (Your GPS location code remains the same) ...
 
 form.addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -35,23 +19,12 @@ form.addEventListener('submit', async function(event) {
     
     submitButton.disabled = true;
     statusDiv.textContent = 'Preparing upload...';
+    // --- NEW: Hide progress bar initially ---
+    progressContainer.style.display = 'none';
 
-    const metadata = {
-        sales_id: form.sales_id.value,
-        outlet_name: form.outlet_name.value,
-        city: form.city.value,
-        address: form.address.value,
-        territory: form.territory.value,
-        location_gps: locationInput.value,
-        filename: file.name
-    };
-
-    const response = await fetch('/api/HttpTrigger', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(metadata)
-    });
-
+    // ... (Your metadata and first fetch call remain the same) ...
+    const response = await fetch('/api/HttpTrigger', { /* ... */ });
+    
     if (!response.ok) {
         statusDiv.textContent = 'Error: Could not get upload URL from server.';
         submitButton.disabled = false;
@@ -60,17 +33,24 @@ form.addEventListener('submit', async function(event) {
 
     const { upload_url, image_id } = await response.json();
     statusDiv.textContent = `Uploading image (${image_id})...`;
+    // --- NEW: Show and animate the progress bar ---
+    progressContainer.style.display = 'block';
+    progressBar.style.width = '50%'; // Indeterminate progress
 
+    // Upload the file directly to Azure Blob Storage
     const uploadResponse = await fetch(upload_url, {
         method: 'PUT',
         body: file,
         headers: { 'x-ms-blob-type': 'BlockBlob' }
     });
 
+    // --- NEW: Hide the progress bar after completion ---
+    progressContainer.style.display = 'none';
+
     if (uploadResponse.ok) {
         statusDiv.textContent = '✅ Upload successful! The image is being processed.';
         form.reset();
-        window.dispatchEvent(new Event('load'));
+        // ...
     } else {
         statusDiv.textContent = '❌ Upload failed. Please try again.';
     }
